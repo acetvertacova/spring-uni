@@ -16,7 +16,7 @@ public class TeamDto {
     private long id;
     private String name;
     private String coach;
-    private List<Player> players;
-    private Set<Match> matches;
+    private List<PlayerDto> players;
+    private Set<MatchDto> matches;
 
 }

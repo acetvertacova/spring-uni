@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -34,10 +33,10 @@ public class PlayerServiceImpl implements PlayerService{
         Statistics statistics = new Statistics(player.getStatistics().getGoals(), player.getStatistics().getAssists());
 
         Player updatedPlayer = Player.builder()
-                .id(player.getId())
                 .firstName(player.getFirstName())
                 .lastName(player.getLastName())
                 .team(player.getTeam())
+                //todo statistics builder
                 .statistics(statistics)
                 .build();
 

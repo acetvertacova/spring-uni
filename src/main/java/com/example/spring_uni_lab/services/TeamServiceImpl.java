@@ -1,13 +1,11 @@
 package com.example.spring_uni_lab.services;
 
-import com.example.spring_uni_lab.entities.Player;
 import com.example.spring_uni_lab.entities.Team;
 import com.example.spring_uni_lab.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.List;
 
 @AllArgsConstructor
