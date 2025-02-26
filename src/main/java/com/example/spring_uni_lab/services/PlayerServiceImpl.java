@@ -1,95 +1,83 @@
 package com.example.spring_uni_lab.services;
 
+import com.example.spring_uni_lab.dto.EntityDtoMapper;
+import com.example.spring_uni_lab.dto.PlayerDto;
 import com.example.spring_uni_lab.entities.Player;
 import com.example.spring_uni_lab.entities.Statistics;
+import com.example.spring_uni_lab.entities.Team;
 import com.example.spring_uni_lab.repositories.PlayerRepository;
+import com.example.spring_uni_lab.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class PlayerServiceImpl implements PlayerService{
+public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
 
     @Override
-    public List<Player> fetchPlayerList(){
-        return playerRepository.findAll();
+    public List<PlayerDto> fetchPlayerList() {
+        List<Player> playerList = playerRepository.findAll();
+
+        return playerList.stream()
+                .map(EntityDtoMapper::playerToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Player savePlayer(Player player){
-        return playerRepository.save(player);
+    public PlayerDto savePlayer(PlayerDto playerDto) {
+        Player player = EntityDtoMapper.playerToEntity(playerDto);
+
+        //??!!
+        if (playerDto.getTeamId() != null) {
+            Team team = teamRepository.findById(playerDto.getTeamId())
+                    .orElseThrow(() -> new RuntimeException("Team not found"));
+            player.setTeam(team);
+        }
+
+        playerRepository.save(player);
+
+        return playerDto;
     }
 
     @Override
-    public Player updatePlayer(@RequestBody Player player, @PathVariable long id){
-        playerRepository.findById(id)
+    public PlayerDto updatePlayer(@RequestBody PlayerDto playerDto, @PathVariable long id) {
+        Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
 
-        Statistics statistics = new Statistics(player.getStatistics().getGoals(), player.getStatistics().getAssists());
+        player.setFirstName(playerDto.getFirstName());
+        player.setLastName(playerDto.getLastName());
 
-        Player updatedPlayer = Player.builder()
-                .firstName(player.getFirstName())
-                .lastName(player.getLastName())
-                .team(player.getTeam())
-                //todo statistics builder
-                .statistics(statistics)
-                .build();
+        if (playerDto.getTeamId() != null) {
+            Team team = teamRepository.findById(playerDto.getTeamId())
+                    .orElseThrow(() -> new RuntimeException("Team not found with id: " + playerDto.getTeamId()));
+            player.setTeam(team);
+        }
 
-        return playerRepository.save(updatedPlayer);
+        player.setStatistics(Statistics.builder()
+                .goals(playerDto.getStatistics().getGoals())
+                .assists(playerDto.getStatistics().getAssists())
+                .build());
+
+        playerRepository.save(player);
+
+        return EntityDtoMapper.playerToDto(player);
 
     }
 
     @Override
-    public void deletePlayerById(long id){
+    public PlayerDto deletePlayerById(long id) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+
         playerRepository.deleteById(id);
+
+       return EntityDtoMapper.playerToDto(player);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @Override
-//    public PlayerDto savePlayer(Player player){
-//        Player savedPlayer = this.playerRepository.save(player);
-//        return modelMapper.map(savedPlayer, PlayerDto.class);
-//    }
-
-//    @Override
-//    public List<Player> fetchPlayerList(){
-//        List<Player> players = StreamSupport.stream(playerRepository
-//                .findAll()
-//                .spliterator(), false)
-//                .toList();
-//        return players;
-//    }
-
-//    @Override
-//    public List<PlayerDto> fetchPlayerList(){
-//        List<Player> players = StreamSupport.stream(playerRepository
-//                .findAll()
-//                .spliterator(), false)
-//                .toList();
-//
-//        List<PlayerDto> playersDto = players.stream()
-//                .map(player -> modelMapper.map(player, PlayerDto.class))
-//                .collect(Collectors.toList());
-//
-//        return playersDto;
-//    }
-
 }

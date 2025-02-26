@@ -1,48 +1,68 @@
 package com.example.spring_uni_lab.services;
 
+import com.example.spring_uni_lab.dto.EntityDtoMapper;
+import com.example.spring_uni_lab.dto.TeamDto;
 import com.example.spring_uni_lab.entities.Team;
+import com.example.spring_uni_lab.repositories.CoachRepository;
 import com.example.spring_uni_lab.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class TeamServiceImpl implements TeamService{
 
     private final TeamRepository teamRepository;
+    private final CoachRepository coachRepository;
 
     @Override
-    public List<Team> fetchTeamList(){
-        return teamRepository.findAll();
+    public List<TeamDto> fetchTeamList(){
+        List<Team> teamList = teamRepository.findAll();
+
+        return teamList.stream()
+                .map(EntityDtoMapper::teamToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Team saveTeam(Team team){
-        return teamRepository.save(team);
+    public TeamDto saveTeam(TeamDto teamDto){
+        Team team = EntityDtoMapper.teamToEntity(teamDto);
+        //todo set Coach
+        teamRepository.save(team);
+        return teamDto;
     }
 
     @Override
-    public Team updateTeam(@RequestBody Team team, @PathVariable long id){
-        teamRepository.findById(id)
+    public TeamDto updateTeam(@RequestBody TeamDto teamDto, @PathVariable long id){
+        Team team = teamRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Team not found with id: " + id));
 
-        Team updatedTeam = Team.builder()
-                .id(team.getId())
-                .name(team.getName())
-                .coach(team.getCoach())
-                .players(team.getPlayers())
-                .matches(team.getMatches())
-                .build();
+        team.setName(teamDto.getName());
+       //team.setCoach(teamDto.getCoach());
+        team.setPlayers(teamDto.getPlayers().stream()
+                .map(EntityDtoMapper::playerToEntity)
+                .collect(Collectors.toList()));
 
-        return teamRepository.save(updatedTeam);
+        team.setMatches(teamDto.getMatches().stream()
+                .map(EntityDtoMapper::matchToEntity)
+                .collect(Collectors.toSet()));
 
+        teamRepository.save(team);
+
+        return EntityDtoMapper.teamToDto(team);
     }
 
     @Override
-    public void deleteTeamById(long id){
-        teamRepository.deleteById(id);
+    public TeamDto deleteTeamById(long id){
+        Team team = teamRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Player not found"));
+
+        teamRepository.deleteById(team.getId());
+
+        return EntityDtoMapper.teamToDto(team);
     }
 }

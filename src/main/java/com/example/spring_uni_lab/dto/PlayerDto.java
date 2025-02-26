@@ -5,6 +5,7 @@ import lombok.*;
 
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerDto {
@@ -13,4 +14,5 @@ public class PlayerDto {
     private String lastName;
     private Long teamId;
     private Statistics statistics;
+
 }

@@ -1,11 +1,10 @@
 package com.example.spring_uni_lab.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
+import java.util.Date;
 import java.util.Set;
 
 @Setter
@@ -13,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Match {
 
     @Id
@@ -21,7 +21,7 @@ public class Match {
 
     private String title;
 
-    private String date;
+    private Date date;
 
     @ManyToMany(mappedBy = "matches")
     private Set<Team> teams;

@@ -7,6 +7,7 @@ import lombok.*;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,4 +26,5 @@ public class Coach {
     @JsonIgnore
     @OneToOne(mappedBy = "coach", cascade = CascadeType.ALL)
     private Team team;
+
 }

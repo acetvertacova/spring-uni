@@ -1,15 +1,14 @@
 package com.example.spring_uni_lab.services;
 
-import com.example.spring_uni_lab.entities.Team;
-
+import com.example.spring_uni_lab.dto.TeamDto;
 import java.util.List;
 
 public interface TeamService {
-    Team saveTeam(Team team);
+    TeamDto saveTeam(TeamDto team);
 
-    List<Team> fetchTeamList();
+    List<TeamDto> fetchTeamList();
 
-    Team updateTeam(Team team, long id);
+    TeamDto updateTeam(TeamDto team, long id);
 
-    void deleteTeamById(long id);
+    TeamDto deleteTeamById(long id);
 }
