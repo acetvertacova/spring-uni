@@ -11,7 +11,7 @@ import lombok.*;
 @Embeddable
 public class Statistics {
 
-    private Integer goals;
+    private Integer goalsBoalsConflict;
     private Integer assists;
 
 }
