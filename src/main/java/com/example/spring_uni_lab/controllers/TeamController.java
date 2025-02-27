@@ -4,6 +4,7 @@ import com.example.spring_uni_lab.dto.TeamDto;
 import com.example.spring_uni_lab.services.TeamService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -19,9 +20,9 @@ public class TeamController {
         return teamService.fetchTeamList();
     }
 
-    @PostMapping("/teams")
-    public TeamDto saveTeam(TeamDto teamDto){
-        return teamService.saveTeam(teamDto);
+    @PostMapping("/team")
+    public TeamDto saveTeam(@RequestBody TeamDto team) {
+        return teamService.saveTeam(team);
     }
 
     @PutMapping("/teams/{id}")
@@ -31,7 +32,7 @@ public class TeamController {
 
     //does not delete by id!
     @DeleteMapping("/teams/{id}")
-    public TeamDto deleteTeamById(@PathVariable("id") long id){
+    public TeamDto deleteTeamById(@PathVariable("id") long id) {
         return teamService.deleteTeamById(id);
     }
 }
