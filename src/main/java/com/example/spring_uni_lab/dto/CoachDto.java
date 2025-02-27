@@ -1,13 +1,14 @@
 package com.example.spring_uni_lab.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class CoachDto {
+    private Long id;
     private String firstName;
     private String lastName;
 }

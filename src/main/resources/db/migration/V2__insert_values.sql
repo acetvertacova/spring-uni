@@ -1,6 +1,7 @@
 INSERT INTO Coach (first_name, last_name) VALUES
     ('John', 'Doe'),
-    ('Jane', 'Smith');
+    ('Jane', 'Smith'),
+    ('John', 'Logan');
 
 INSERT INTO League (name) VALUES
     ('Premier League'),
@@ -18,7 +19,7 @@ INSERT INTO Player (first_name, last_name, team_id, goals, assists) VALUES
     ('Kai', 'Tanaka', 2, 10, 3);
 
 INSERT INTO Match (title, date, home_team_id, away_team_id, league_id) VALUES
-    ('A vs B', '2025-03-01', 1, 1, 1);
+    ('A vs B', '2025-03-01', 1, 2, 1);
 
 INSERT INTO Team_Match_Reference (team_id, match_id) VALUES
     (1, 1),

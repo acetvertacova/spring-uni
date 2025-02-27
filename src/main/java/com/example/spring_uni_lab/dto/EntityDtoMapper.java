@@ -1,10 +1,7 @@
 package com.example.spring_uni_lab.dto;
 
 
-import com.example.spring_uni_lab.entities.Match;
-import com.example.spring_uni_lab.entities.Player;
-import com.example.spring_uni_lab.entities.Statistics;
-import com.example.spring_uni_lab.entities.Team;
+import com.example.spring_uni_lab.entities.*;
 
 import java.util.List;
 import java.util.Set;
@@ -37,33 +34,58 @@ public class EntityDtoMapper {
     public static List<Player> playerListToEntity(List<PlayerDto> playerListDto) {
         return playerListDto != null ? playerListDto.stream()
                 .map(playerDto -> playerToEntity(playerDto))
-                .toList() : null;
+                .toList()
+                : null;
 
     }
 
     public static List<PlayerDto> playerListToDto(List<Player> playerList) {
         return playerList != null ? playerList.stream()
                 .map(player -> playerToDto(player))
-                .toList() : null;
+                .toList()
+                : null;
 
     }
 
     public static TeamDto teamToDto(Team team) {
         return TeamDto.builder()
+                .id(team.getId())
                 .name(team.getName())
-                //.coach(team.getCoach().getLastName())
                 .players(playerListToDto(team.getPlayers()))
+                .coach(coachtoDto(team.getCoach()))
+                .league(leagueToDto(team.getLeague()))
                 .matches(matchListToDto(team.getMatches()))
+                .build();
+    }
+
+    public static CoachDto coachtoDto(Coach coach) {
+        return CoachDto.builder()
+                .id(coach.getId())
+                .firstName(coach.getFirstName())
+                .lastName(coach.getLastName())
+                .build();
+    }
+
+    public static Coach coachtoEntity(CoachDto coachDto) {
+        return Coach.builder()
+                .firstName(coachDto.getFirstName())
+                .lastName(coachDto.getLastName())
+                .build();
+    }
+
+    public static LeagueDto leagueToDto(League league) {
+        return LeagueDto.builder()
+                .id(league.getId())
+                .name(league.getName())
                 .build();
     }
 
     public static Team teamToEntity(TeamDto teamDto) {
         return Team.builder()
                 .name(teamDto.getName())
-                .players(playerListToEntity(teamDto.getPlayers()))
-                .matches(teamDto.getMatches().stream()
-                        .map(match -> matchToEntity(match))
-                        .collect(Collectors.toSet()))
+//                .coach(coachtoEntity(teamDto.getCoach()))
+//                .players(playerListToEntity(teamDto.getPlayers()))
+//                .matches(matchListToEntity(teamDto.getMatches()))
                 .build();
     }
 
