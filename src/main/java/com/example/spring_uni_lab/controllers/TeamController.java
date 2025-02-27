@@ -1,17 +1,10 @@
 package com.example.spring_uni_lab.controllers;
 
 import com.example.spring_uni_lab.dto.TeamDto;
-import com.example.spring_uni_lab.entities.Team;
 import com.example.spring_uni_lab.services.TeamService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -20,41 +13,25 @@ public class TeamController {
 
     private final TeamService teamService;
 
-    @Autowired
-    private ModelMapper modelMapper;
 
     @GetMapping("/teams")
     public List<TeamDto> fetchTeamList() {
-        return teamService.fetchTeamList().stream()
-                .map(team -> modelMapper.map(team, TeamDto.class))
-                .collect(Collectors.toList());
+        return teamService.fetchTeamList();
     }
 
     @PostMapping("/teams")
-    public ResponseEntity<TeamDto> saveTeam(@RequestBody TeamDto teamDto){
-        //Dto to entity
-        Team teameRequest = modelMapper.map(teamDto, Team.class);
-        Team team = teamService.saveTeam(teameRequest);
-
-        // entity to DTO
-        TeamDto teamResponse = modelMapper.map(team, TeamDto.class);
-        return new ResponseEntity<TeamDto>(teamResponse, HttpStatus.CREATED);
+    public TeamDto saveTeam(TeamDto teamDto){
+        return teamService.saveTeam(teamDto);
     }
 
     @PutMapping("/teams/{id}")
-    public ResponseEntity<TeamDto> updateTeam(@RequestBody TeamDto teamDto, @PathVariable("id") long id) {
-
-        // DTO to Entity
-        Team teamRequest = modelMapper.map(teamDto, Team.class);
-        Team team = teamService.updateTeam(teamRequest, id);
-
-        // entity to DTO
-        TeamDto teamResponse = modelMapper.map(team, TeamDto.class);
-        return ResponseEntity.ok().body(teamResponse);
+    public TeamDto updateTeam(@RequestBody TeamDto teamDto, @PathVariable("id") long id) {
+        return teamService.updateTeam(teamDto, id);
     }
 
-    @DeleteMapping("/players/{id}")
-    public void deleteTeamById(@PathVariable("id") long id){
-        teamService.deleteTeamById(id);
+    //does not delete by id!
+    @DeleteMapping("/teams/{id}")
+    public TeamDto deleteTeamById(@PathVariable("id") long id){
+        return teamService.deleteTeamById(id);
     }
 }

@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS Team (
     name varchar(50),
     coach_id int unique references Coach (id),
     league_id int references League (id)
+    team_match_id int references Team_Match_Reference(match_id)
 );
 
 CREATE TABLE IF NOT EXISTS Player (
@@ -23,15 +24,13 @@ CREATE TABLE IF NOT EXISTS Player (
     goals INT DEFAULT 0,
     assists INT DEFAULT 0,
     team_id int references Team (id)
-
 );
 
 CREATE TABLE IF NOT EXISTS Match (
     id serial primary key,
     title varchar(50),
     date date,
-    home_team_id int references Team (id),
-    away_team_id int references Team (id),
+    match_team_id int references Team_Match_Reference(team_id),
     league_id int references League (id)
 );
 

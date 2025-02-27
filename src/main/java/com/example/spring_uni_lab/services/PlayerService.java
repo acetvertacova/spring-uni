@@ -1,18 +1,17 @@
 package com.example.spring_uni_lab.services;
 
 import com.example.spring_uni_lab.dto.PlayerDto;
-import com.example.spring_uni_lab.entities.Player;
 
 import java.util.List;
 
 public interface PlayerService {
 
-    Player savePlayer(Player player);
+    PlayerDto savePlayer(PlayerDto player);
 
-    List<Player> fetchPlayerList();
+    List<PlayerDto> fetchPlayerList();
 
-    Player updatePlayer(Player player, long id);
+    PlayerDto updatePlayer(PlayerDto player, long id);
 
-    void deletePlayerById(long id);
+    PlayerDto deletePlayerById(long id);
 
 }
