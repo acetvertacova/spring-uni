@@ -21,17 +21,16 @@ public class TeamController {
     }
 
     @PostMapping("/team")
-    public TeamDto saveTeam(@RequestBody TeamDto team) {
-        return teamService.saveTeam(team);
+    public TeamDto createTeam(@RequestBody TeamDto team) {
+        return teamService.createTeam(team);
     }
 
-    @PutMapping("/teams/{id}")
+    @PutMapping("/team/{id}")
     public TeamDto updateTeam(@RequestBody TeamDto teamDto, @PathVariable("id") long id) {
         return teamService.updateTeam(teamDto, id);
     }
 
-    //does not delete by id!
-    @DeleteMapping("/teams/{id}")
+    @DeleteMapping("/team/{id}")
     public TeamDto deleteTeamById(@PathVariable("id") long id) {
         return teamService.deleteTeamById(id);
     }

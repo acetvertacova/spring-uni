@@ -2,11 +2,15 @@ package com.example.spring_uni_lab.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static javax.swing.event.DocumentEvent.EventType.REMOVE;
 
 @Setter
 @Getter
@@ -29,7 +33,7 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Team_Match_Reference",
             joinColumns = @JoinColumn(name = "match_id"),

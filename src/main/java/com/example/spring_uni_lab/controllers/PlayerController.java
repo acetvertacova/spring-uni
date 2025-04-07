@@ -18,17 +18,17 @@ public class PlayerController {
         return playerService.fetchPlayerList();
     }
 
-    @PostMapping("/players")
-    public PlayerDto savePlayer(@RequestBody PlayerDto playerDto){
-        return playerService.savePlayer(playerDto);
+    @PostMapping("/player")
+    public PlayerDto createPlayer(@RequestBody PlayerDto playerDto){
+        return playerService.createPlayer(playerDto);
     }
 
-    @PutMapping("/players/{id}")
+    @PutMapping("/player/{id}")
     public PlayerDto updatePlayer(@RequestBody PlayerDto playerDto, @PathVariable("id") long id){
         return playerService.updatePlayer(playerDto, id);
     }
 
-    @DeleteMapping("/players/{id}")
+    @DeleteMapping("/player/{id}")
     public PlayerDto deleteById(@PathVariable("id") long id){
         return playerService.deletePlayerById(id);
     }

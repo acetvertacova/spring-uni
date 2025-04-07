@@ -4,7 +4,7 @@ import com.example.spring_uni_lab.dto.TeamDto;
 import java.util.List;
 
 public interface TeamService {
-    TeamDto saveTeam(TeamDto team);
+    TeamDto createTeam(TeamDto team);
 
     List<TeamDto> fetchTeamList();
 

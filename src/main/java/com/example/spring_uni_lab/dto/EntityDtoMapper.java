@@ -60,7 +60,6 @@ public class EntityDtoMapper {
 
     public static CoachDto coachtoDto(Coach coach) {
         return CoachDto.builder()
-                .id(coach.getId())
                 .firstName(coach.getFirstName())
                 .lastName(coach.getLastName())
                 .build();
@@ -68,6 +67,7 @@ public class EntityDtoMapper {
 
     public static Coach coachtoEntity(CoachDto coachDto) {
         return Coach.builder()
+                .id(coachDto.getId())
                 .firstName(coachDto.getFirstName())
                 .lastName(coachDto.getLastName())
                 .build();
@@ -80,12 +80,16 @@ public class EntityDtoMapper {
                 .build();
     }
 
+    public static League leagueToEntity(LeagueDto leagueDto) {
+        return League.builder()
+                .id(leagueDto.getId())
+                .name(leagueDto.getName())
+                .build();
+    }
+
     public static Team teamToEntity(TeamDto teamDto) {
         return Team.builder()
                 .name(teamDto.getName())
-//                .coach(coachtoEntity(teamDto.getCoach()))
-//                .players(playerListToEntity(teamDto.getPlayers()))
-//                .matches(matchListToEntity(teamDto.getMatches()))
                 .build();
     }
 

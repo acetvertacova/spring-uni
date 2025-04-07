@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerDto {
-
     private String firstName;
     private String lastName;
     private Long teamId;

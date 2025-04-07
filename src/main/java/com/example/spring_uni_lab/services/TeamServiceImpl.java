@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDto saveTeam(TeamDto teamDto) {
+    public TeamDto createTeam(TeamDto teamDto) {
 
         Coach coach = coachRepository.findById(teamDto.getCoach().getId()).orElseThrow(() -> new RuntimeException("Coach not found"));
         League league = leagueRepository.findById(teamDto.getLeague().getId()).orElseThrow(() -> new RuntimeException("Coach not found"));
@@ -54,9 +53,18 @@ public class TeamServiceImpl implements TeamService {
                 .orElseThrow(() -> new RuntimeException("Team not found with id: " + id));
 
         team.setName(teamDto.getName());
-        //team.setPlayers(playerListToEntity(teamDto.getPlayers()));
-        //team.setCoach(coachtoEntity(teamDto.getCoach()));
-        //team.setMatches(matchListToEntity(teamDto.getMatches()));
+
+        if (teamDto.getCoach().getId() != null) {
+            Coach coach = coachRepository.findById(teamDto.getCoach().getId())
+                    .orElseThrow(() -> new RuntimeException("Team not found with id: " + teamDto.getCoach().getId()));
+            team.setCoach(coach);
+        }
+
+        if (teamDto.getLeague().getId() != null) {
+            League league = leagueRepository.findById(teamDto.getLeague().getId())
+                    .orElseThrow(() -> new RuntimeException("Team not found with id: " + teamDto.getLeague().getId()));
+            team.setLeague(league);
+        }
 
         teamRepository.save(team);
         return EntityDtoMapper.teamToDto(team);
@@ -65,7 +73,16 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamDto deleteTeamById(long id) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+
+        if (team.getCoach() != null) {
+            team.getCoach().setTeam(null);
+        }
+
+        if (team.getLeague() != null) {
+            team.getLeague().getTeams().remove(team);
+        }
 
         teamRepository.deleteById(team.getId());
         return EntityDtoMapper.teamToDto(team);
