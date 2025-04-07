@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PlayerService {
 
-    PlayerDto savePlayer(PlayerDto player);
+    PlayerDto createPlayer(PlayerDto player);
 
     List<PlayerDto> fetchPlayerList();
 
