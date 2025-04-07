@@ -1,5 +1,6 @@
 package com.example.spring_uni_lab.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Setter

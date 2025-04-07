@@ -31,10 +31,9 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerDto savePlayer(PlayerDto playerDto) {
+    public PlayerDto createPlayer(PlayerDto playerDto) {
         Player player = EntityDtoMapper.playerToEntity(playerDto);
 
-        //??!!
         if (playerDto.getTeamId() != null) {
             Team team = teamRepository.findById(playerDto.getTeamId())
                     .orElseThrow(() -> new RuntimeException("Team not found"));
@@ -47,7 +46,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerDto updatePlayer(@RequestBody PlayerDto playerDto, @PathVariable long id) {
+    public PlayerDto updatePlayer(PlayerDto playerDto, long id) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
 
@@ -77,7 +76,6 @@ public class PlayerServiceImpl implements PlayerService {
                 .orElseThrow(() -> new RuntimeException("Player not found"));
 
         playerRepository.deleteById(id);
-
-       return EntityDtoMapper.playerToDto(player);
+        return EntityDtoMapper.playerToDto(player);
     }
 }

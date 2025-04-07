@@ -29,14 +29,14 @@ CREATE TABLE IF NOT EXISTS Match (
     id serial primary key,
     title varchar(50),
     date date,
-    home_team_id int references Team(id),
-    away_team_id int references Team(id),
+    home_team_id int references Team(id) on delete cascade,
+    away_team_id int references Team(id) on delete cascade,
     league_id int references League(id)
 );
 
 CREATE TABLE IF NOT EXISTS Team_Match_Reference (
-    team_id int references Team(id),
-    match_id int references Match(id),
+    team_id int references Team(id) on delete cascade,
+    match_id int references Match(id) on delete cascade,
     primary key(team_id, match_id)
 )
 
