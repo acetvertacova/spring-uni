@@ -3,6 +3,7 @@ package com.example.spring_uni_lab.services;
 import com.example.spring_uni_lab.dto.CoachDto;
 import com.example.spring_uni_lab.dto.EntityDtoMapper;
 import com.example.spring_uni_lab.entities.Coach;
+import com.example.spring_uni_lab.jdbc.repositories.JdbcCoachRepository;
 import com.example.spring_uni_lab.repositories.CoachRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,11 @@ import java.util.stream.Collectors;
 public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
+    private final JdbcCoachRepository jdbcCoachRepository;
 
     @Override
     public List<CoachDto> fetchCoachList() {
-        List<Coach> coachesList = coachRepository.findAll();
+        List<Coach> coachesList = jdbcCoachRepository.findAll();
 
         return coachesList.stream()
                 .map(EntityDtoMapper::coachtoDto)
