@@ -12,17 +12,5 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Repository
 public class JdbcLeagueRepository {
-    private final SessionFactory sessionFactory;
 
-    public void save(League league){
-        Session session = sessionFactory.openSession();
-        Transaction saveLeague = session.beginTransaction();
-        session.save(league);
-        saveLeague.commit();
-        session.close();
-    }
-
-    public Optional<League> findById(long id){
-        return Optional.of(sessionFactory.openSession().get(League.class, id));
-    }
 }

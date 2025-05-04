@@ -12,12 +12,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @Repository
 public class JdbcPlayerRepository {
-    private final SessionFactory sessionFactory;
 
-    public List<Player> findAll() {
-        String sql = "FROM Player";
-        Session session = sessionFactory.openSession();
-        Query<Player> query = session.createQuery(sql, Player.class);
-        return query.getResultList();
-    }
 }

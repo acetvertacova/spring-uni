@@ -12,21 +12,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 @Repository
 public class JdbcTeamRepository {
-    private final SessionFactory sessionFactory;
 
-    public Team save(Team team) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
 
-            Coach managedCoach = session.merge(team.getCoach());
-            League managedLeague = session.merge(team.getLeague());
-
-            team.setCoach(managedCoach);
-            team.setLeague(managedLeague);
-
-            Team merged = session.merge(team);
-            tx.commit();
-            return merged;
-        }
-    }
 }
