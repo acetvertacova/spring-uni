@@ -5,6 +5,7 @@ import com.example.spring_uni_lab.dto.PlayerDto;
 import com.example.spring_uni_lab.entities.Player;
 import com.example.spring_uni_lab.entities.Statistics;
 import com.example.spring_uni_lab.entities.Team;
+import com.example.spring_uni_lab.hibernate.repository.HbPlayerRepository;
 import com.example.spring_uni_lab.repositories.PlayerRepository;
 import com.example.spring_uni_lab.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
@@ -19,11 +20,12 @@ import java.util.stream.Collectors;
 public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final HbPlayerRepository hbPlayerRepository;
     private final TeamRepository teamRepository;
 
     @Override
     public List<PlayerDto> fetchPlayerList() {
-        List<Player> playerList = playerRepository.findAll();
+        List<Player> playerList = hbPlayerRepository.findAll();
 
         return playerList.stream()
                 .map(EntityDtoMapper::playerToDto)

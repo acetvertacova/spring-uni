@@ -13,10 +13,5 @@ public class SpringUniLabApplication {
 
 	}
 
-	@Bean
-	public ModelMapper getModelMapper() {
-		return new ModelMapper();
-	}
-
 
 }

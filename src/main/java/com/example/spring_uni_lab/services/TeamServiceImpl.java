@@ -5,9 +5,13 @@ import com.example.spring_uni_lab.dto.TeamDto;
 import com.example.spring_uni_lab.entities.Coach;
 import com.example.spring_uni_lab.entities.League;
 import com.example.spring_uni_lab.entities.Team;
+import com.example.spring_uni_lab.hibernate.repository.HbCoachRepository;
+import com.example.spring_uni_lab.hibernate.repository.HbLeagueRepository;
+import com.example.spring_uni_lab.hibernate.repository.HbTeamRepository;
 import com.example.spring_uni_lab.repositories.CoachRepository;
 import com.example.spring_uni_lab.repositories.LeagueRepository;
 import com.example.spring_uni_lab.repositories.TeamRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +25,9 @@ import java.util.stream.Collectors;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
+    private final HbCoachRepository hbCoachRepository;
+    private final HbLeagueRepository hbLeagueRepository;
+    private final HbTeamRepository hbTeamRepository;
     private final CoachRepository coachRepository;
     private final LeagueRepository leagueRepository;
 
@@ -36,15 +43,15 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamDto createTeam(TeamDto teamDto) {
 
-        Coach coach = coachRepository.findById(teamDto.getCoach().getId()).orElseThrow(() -> new RuntimeException("Coach not found"));
-        League league = leagueRepository.findById(teamDto.getLeague().getId()).orElseThrow(() -> new RuntimeException("Coach not found"));
+        Coach coach = hbCoachRepository.findById(teamDto.getCoach().getId()).orElseThrow(() -> new RuntimeException("Coach not found"));
+        League league = hbLeagueRepository.findById(teamDto.getLeague().getId()).orElseThrow(() -> new RuntimeException("Coach not found"));
 
         Team team = EntityDtoMapper.teamToEntity(teamDto);
         team.setCoach(coach);
         team.setLeague(league);
 
-        teamRepository.save(team);
-        return EntityDtoMapper.teamToDto(team);
+        Team result = hbTeamRepository.save(team);
+        return EntityDtoMapper.teamToDto(result);
     }
 
     @Override

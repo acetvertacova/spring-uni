@@ -2,6 +2,7 @@ package com.example.spring_uni_lab.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,6 +19,7 @@ import static javax.swing.event.DocumentEvent.EventType.REMOVE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "team")
 public class Team {
 
     @Id

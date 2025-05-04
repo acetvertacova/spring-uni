@@ -60,6 +60,7 @@ public class EntityDtoMapper {
 
     public static CoachDto coachtoDto(Coach coach) {
         return CoachDto.builder()
+                .id(coach.getId())
                 .firstName(coach.getFirstName())
                 .lastName(coach.getLastName())
                 .build();
