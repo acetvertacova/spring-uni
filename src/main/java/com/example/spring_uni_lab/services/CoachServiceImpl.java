@@ -3,6 +3,7 @@ package com.example.spring_uni_lab.services;
 import com.example.spring_uni_lab.dto.CoachDto;
 import com.example.spring_uni_lab.dto.EntityDtoMapper;
 import com.example.spring_uni_lab.entities.Coach;
+import com.example.spring_uni_lab.hibernate.repository.HbCoachRepository;
 import com.example.spring_uni_lab.jdbc.repositories.JdbcCoachRepository;
 import com.example.spring_uni_lab.repositories.CoachRepository;
 import lombok.AllArgsConstructor;
@@ -18,11 +19,12 @@ import java.util.stream.Collectors;
 public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
+    private final HbCoachRepository hbCoachRepository;
     private final JdbcCoachRepository jdbcCoachRepository;
 
     @Override
     public List<CoachDto> fetchCoachList() {
-        List<Coach> coachesList = jdbcCoachRepository.findAll();
+        List<Coach> coachesList = hbCoachRepository.findAll();
 
         return coachesList.stream()
                 .map(EntityDtoMapper::coachtoDto)
@@ -33,29 +35,29 @@ public class CoachServiceImpl implements CoachService{
     public CoachDto createCoach(CoachDto coachDto) {
         Coach coach = EntityDtoMapper.coachtoEntity(coachDto);
 
-        coachRepository.save(coach);
+        hbCoachRepository.save(coach);
         return coachDto;
     }
 
     @Override
     public CoachDto updateCoach(CoachDto coachDto, long id) {
-        Coach coach = coachRepository.findById(id)
+        Coach coach = hbCoachRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
 
         coach.setFirstName(coachDto.getFirstName());
         coach.setLastName(coachDto.getLastName());
 
-        coachRepository.save(coach);
+        hbCoachRepository.update(coach);
         return EntityDtoMapper.coachtoDto(coach);
 
     }
 
     @Override
     public CoachDto deleteCoachById(long id) {
-        Coach coach = coachRepository.findById(id)
+        Coach coach = hbCoachRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
 
-        coachRepository.deleteById(id);
+        hbCoachRepository.deleteById(id);
         return EntityDtoMapper.coachtoDto(coach);
     }
 

@@ -31,7 +31,7 @@ public class TeamController {
     }
 
     @DeleteMapping("/team/{id}")
-    public TeamDto deleteTeamById(@PathVariable("id") long id) {
+    public TeamDto deleteById(@PathVariable("id") long id) {
         return teamService.deleteTeamById(id);
     }
 }

@@ -29,10 +29,10 @@ public class Team {
     private String name;
 
     @OneToOne
-    @MapsId
+    @JoinColumn(name = "coach_id", referencedColumnName = "id")
     private Coach coach;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Player> players;
 
     @ManyToMany(fetch = FetchType.EAGER)
