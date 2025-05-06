@@ -43,8 +43,7 @@ public class PlayerServiceImpl implements PlayerService {
         Player player = EntityDtoMapper.playerToEntity(playerDto);
 
         if (playerDto.getTeamId() != null) {
-            Team team = hbTeamRepository.findById(playerDto.getTeamId())
-                    .orElseThrow(() -> new RuntimeException("Team not found"));
+            Team team = jdbcTeamRepository.findById(playerDto.getTeamId());
             player.setTeam(team);
         }
 
