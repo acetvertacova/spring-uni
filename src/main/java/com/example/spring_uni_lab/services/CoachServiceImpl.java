@@ -24,7 +24,7 @@ public class CoachServiceImpl implements CoachService{
 
     @Override
     public List<CoachDto> fetchCoachList() {
-        List<Coach> coachesList = hbCoachRepository.findAll();
+        List<Coach> coachesList = jdbcCoachRepository.findAll();
 
         return coachesList.stream()
                 .map(EntityDtoMapper::coachtoDto)
@@ -35,29 +35,27 @@ public class CoachServiceImpl implements CoachService{
     public CoachDto createCoach(CoachDto coachDto) {
         Coach coach = EntityDtoMapper.coachtoEntity(coachDto);
 
-        hbCoachRepository.save(coach);
+        jdbcCoachRepository.save(coach);
         return coachDto;
     }
 
     @Override
     public CoachDto updateCoach(CoachDto coachDto, long id) {
-        Coach coach = hbCoachRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
+        Coach coach = jdbcCoachRepository.findById(id);
 
         coach.setFirstName(coachDto.getFirstName());
         coach.setLastName(coachDto.getLastName());
 
-        hbCoachRepository.update(coach);
+        jdbcCoachRepository.update(coach);
         return EntityDtoMapper.coachtoDto(coach);
 
     }
 
     @Override
     public CoachDto deleteCoachById(long id) {
-        Coach coach = hbCoachRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+        Coach coach = jdbcCoachRepository.findById(id);
 
-        hbCoachRepository.deleteById(id);
+        jdbcCoachRepository.deleteById(id);
         return EntityDtoMapper.coachtoDto(coach);
     }
 

@@ -15,50 +15,45 @@ import java.util.Optional;
 @Repository
 public class HbCoachRepository {
     private final SessionFactory sessionFactory;
-
-    public void save(Coach coach){
+    public void save(Coach coach) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        try{
+        try {
             session.save(coach);
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             transaction.rollback();
         }
         session.close();
     }
-
-    public Optional<Coach> findById(long id){
+    public Optional<Coach> findById(long id) {
         return Optional.of(sessionFactory.openSession().get(Coach.class, id));
     }
-
     public List<Coach> findAll() {
         String sql = "FROM Coach";
         Session session = sessionFactory.openSession();
         Query<Coach> query = session.createQuery(sql, Coach.class);
         return query.getResultList();
     }
-
-    public void update(Coach coach){
+    public void update(Coach coach) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        try{
+        try {
             session.update(coach);
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             transaction.rollback();
         }
         session.close();
     }
-
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Coach coach = session.get(Coach.class, id);
-        try{
+        try {
             session.delete(coach);
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             transaction.rollback();
         }
         session.close();

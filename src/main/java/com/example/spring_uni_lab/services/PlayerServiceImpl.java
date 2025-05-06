@@ -7,6 +7,8 @@ import com.example.spring_uni_lab.entities.Statistics;
 import com.example.spring_uni_lab.entities.Team;
 import com.example.spring_uni_lab.hibernate.repository.HbPlayerRepository;
 import com.example.spring_uni_lab.hibernate.repository.HbTeamRepository;
+import com.example.spring_uni_lab.jdbc.repositories.JdbcPlayerRepository;
+import com.example.spring_uni_lab.jdbc.repositories.JdbcTeamRepository;
 import com.example.spring_uni_lab.repositories.PlayerRepository;
 import com.example.spring_uni_lab.repositories.TeamRepository;
 import lombok.AllArgsConstructor;
@@ -24,10 +26,12 @@ public class PlayerServiceImpl implements PlayerService {
     private final HbPlayerRepository hbPlayerRepository;
     private final TeamRepository teamRepository;
     private final HbTeamRepository hbTeamRepository;
+    private final JdbcPlayerRepository jdbcPlayerRepository;
+    private final JdbcTeamRepository jdbcTeamRepository;
 
     @Override
     public List<PlayerDto> fetchPlayerList() {
-        List<Player> playerList = hbPlayerRepository.findAll();
+        List<Player> playerList = jdbcPlayerRepository.findAll();
 
         return playerList.stream()
                 .map(EntityDtoMapper::playerToDto)
@@ -44,21 +48,18 @@ public class PlayerServiceImpl implements PlayerService {
             player.setTeam(team);
         }
 
-        hbPlayerRepository.save(player);
+        jdbcPlayerRepository.save(player);
         return playerDto;
     }
 
     @Override
     public PlayerDto updatePlayer(PlayerDto playerDto, long id) {
-        Player player = hbPlayerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
-
+        Player player = jdbcPlayerRepository.findById(id);
         player.setFirstName(playerDto.getFirstName());
         player.setLastName(playerDto.getLastName());
 
         if (playerDto.getTeamId() != null) {
-            Team team = hbTeamRepository.findById(playerDto.getTeamId())
-                    .orElseThrow(() -> new RuntimeException("Team not found with id: " + playerDto.getTeamId()));
+            Team team = jdbcTeamRepository.findById(playerDto.getTeamId());
             player.setTeam(team);
         }
 
@@ -67,17 +68,15 @@ public class PlayerServiceImpl implements PlayerService {
                 .assists(playerDto.getStatistics().getAssists())
                 .build());
 
-        hbPlayerRepository.save(player);
+        jdbcPlayerRepository.update(player);
         return EntityDtoMapper.playerToDto(player);
 
     }
 
     @Override
     public PlayerDto deletePlayerById(long id) {
-        Player player = hbPlayerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
-
-        hbPlayerRepository.deleteById(id);
+        Player player = jdbcPlayerRepository.findById(id);
+        jdbcPlayerRepository.deleteById(id);
         return EntityDtoMapper.playerToDto(player);
     }
 }

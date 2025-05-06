@@ -52,5 +52,4 @@ public class HbPlayerRepository {
     public Optional<Player> findById(long id) {
         return Optional.of(sessionFactory.openSession().get(Player.class, id));
     }
-
 }
